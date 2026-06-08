@@ -1,7 +1,14 @@
 const express=require('express');
 const mysql=require('mysql2');
-
 const app=express();
+
+app.use(express.json());   // <-- move this here
+
+const usersRoute = require("./routes/users");
+const busesRoute = require("./routes/buses");
+
+app.use("/users", usersRoute);
+app.use("/buses", busesRoute);
 
 const connection=mysql.createConnection({
     host:'localhost',
