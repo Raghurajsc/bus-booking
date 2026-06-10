@@ -1,33 +1,10 @@
-const express=require('express');
+const router = require("express").Router();
+const controller = require("../controllers/user.controller");
+const bookingController = require("../controllers/booking.controller");
 
-const router=express.Router();
-const connection = require("../db");
+router.post("/", controller.createUser);
+router.get("/", controller.getUsers);
 
-router.post('/',(req,res)=>{
-const {name,email}=req.body;
+router.get("/:id/bookings", bookingController.getUserBookings);
 
-connection.query(
-    `INSERT into Users(name,email) VALUES (?,?)`,
-    [name,email],
-    (err,result)=>{
-        if(err){
-        return res.status(500).send(err);
-        }
-        res.send("User added successfully");
-    }
-);
-});
-
-router.get('/',(req,res)=>{
-    connection.query(
-        "Select * from users",
-        (err,result)=>{
-            if(err){
-                return res.status(500).send(err);
-            }
-            res.json(result);
-        }
-    );
-})
-
-module.exports=router;
+module.exports = router;
